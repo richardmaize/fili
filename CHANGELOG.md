@@ -14,6 +14,11 @@ Current
     * Logs a warning if no userPrincipal is set on the request (ie. we don't know who the user is), and sets the
       `user` field in the `Preface` log block to `NO_USER_PRINCIPAL`.
 
+- [Make healthcheck filter reject message nicer](https://github.com/yahoo/fili/pull/153)
+    * The previous message of `reject <url>` wasn't helpful, useful, nor very nice to users, and the message logged was
+      not very useful either. The message has been made nicer (`Service is unhealthy. At least 1 healthcheck is
+      failing`), and the log has been made better as well.
+
 ### Deprecated:
 
 
