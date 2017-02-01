@@ -85,7 +85,8 @@ public class RequestLog {
     }
 
     /**
-     * Copys the data from source into the current request log
+     * Copys the data from source into the current request log.
+     *
      * @param source the request log to copy from
      */
     protected void restoreFrom(RequestLog source) {
@@ -129,9 +130,10 @@ public class RequestLog {
     }
 
     /**
-     * Retrieve a {@link TimedPhase} if it exists
+     * Retrieve a {@link TimedPhase} if it exists.
      *
      * @param phaseName the name of the timed phase
+     *
      * @return the phase
      */
     protected TimedPhase getPhase(String phaseName) {
@@ -139,7 +141,7 @@ public class RequestLog {
     }
 
     /**
-     * Add a timed phase to the request log
+     * Add a timed phase to the request log.
      *
      * @param phase the phase to be timed
      */
@@ -167,6 +169,7 @@ public class RequestLog {
      * Adds the durations in milliseconds of all the recorded timed phases to a map.
      *
      * @param updateTimers a flag indicating whether or not the metrics registry should be updated
+     *
      * @return the map containing all the recorded times per phase in milliseconds
      */
     protected Map<String, Float> getAggregateDurations(boolean updateTimers) {

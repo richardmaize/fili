@@ -161,7 +161,7 @@ public class RequestLogUtils {
     /**
      * Expose the request phases and their durations in nanoseconds.
      *
-     * @return a mapping of phase -> duration (ns)
+     * @return a mapping of phase -&gt; duration (ns)
      */
     public static Map<String, Long> getDurations() {
         return RLOG.get().getDurations();
@@ -171,7 +171,7 @@ public class RequestLogUtils {
      * Expose the request phases and their durations in milliseconds (including an entry for the longest druid query
      * that ran).
      *
-     * @return a mapping of phase -> duration (ms)
+     * @return a mapping of phase -&gt; duration (ms)
      */
     public static Map<String, Float> getAggregateDurations() {
         return RLOG.get().getAggregateDurations(false);

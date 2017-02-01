@@ -47,7 +47,7 @@ import com.yahoo.bard.webservice.druid.model.orderby.SortDirection;
 import com.yahoo.bard.webservice.druid.model.query.AllGranularity;
 import com.yahoo.bard.webservice.druid.model.query.Granularity;
 import com.yahoo.bard.webservice.druid.util.FieldConverterSupplier;
-import com.yahoo.bard.webservice.logging.RequestLog;
+import com.yahoo.bard.webservice.logging.RequestLogUtils;
 import com.yahoo.bard.webservice.table.LogicalTable;
 import com.yahoo.bard.webservice.table.TableIdentifier;
 import com.yahoo.bard.webservice.util.StreamUtils;
@@ -223,14 +223,14 @@ public class DataApiRequest extends ApiRequest {
         this.filters = generateFilters(filters, table, dimensionDictionary);
         validateRequestDimensions(this.filters.keySet(), this.table);
 
-        RequestLog.startTiming("BuildingDruidFilter");
+        RequestLogUtils.startTiming("BuildingDruidFilter");
         try {
             this.filter = filterBuilder.buildFilters(this.filters);
         } catch (DimensionRowNotFoundException e) {
             LOG.debug(e.getMessage());
             throw new BadApiRequestException(e);
         } finally {
-            RequestLog.stopTiming("BuildingDruidFilter");
+            RequestLogUtils.stopTiming("BuildingDruidFilter");
         }
 
         // Zero or more having queries may be referenced
@@ -304,7 +304,7 @@ public class DataApiRequest extends ApiRequest {
      * @return the request's TimeZone
      */
     private DateTimeZone generateTimeZone(String timeZoneId, DateTimeZone systemTimeZone) {
-        RequestLog.startTiming("generatingTimeZone");
+        RequestLogUtils.startTiming("generatingTimeZone");
         try {
             if (timeZoneId == null) {
                 return systemTimeZone;
@@ -316,7 +316,7 @@ public class DataApiRequest extends ApiRequest {
                 throw new BadApiRequestException(INVALID_TIME_ZONE.format(timeZoneId));
             }
         } finally {
-            RequestLog.stopTiming("generatingTimeZone");
+            RequestLogUtils.stopTiming("generatingTimeZone");
         }
     }
 
@@ -481,7 +481,7 @@ public class DataApiRequest extends ApiRequest {
             List<PathSegment> apiDimensions,
             DimensionDictionary dimensionDictionary
     ) throws BadApiRequestException {
-        RequestLog.startTiming("GeneratingDimensions");
+        RequestLogUtils.startTiming("GeneratingDimensions");
         try {
             // Dimensions are optional hence check if dimensions are requested.
             if (apiDimensions == null || apiDimensions.isEmpty()) {
@@ -516,7 +516,7 @@ public class DataApiRequest extends ApiRequest {
             LOG.trace("Generated set of dimension: {}", generated);
             return generated;
         } finally {
-            RequestLog.stopTiming("GeneratingDimensions");
+            RequestLogUtils.stopTiming("GeneratingDimensions");
         }
     }
 
@@ -535,7 +535,7 @@ public class DataApiRequest extends ApiRequest {
             @NotNull List<PathSegment> apiDimensionPathSegments,
             @NotNull DimensionDictionary dimensionDictionary
     ) {
-        RequestLog.startTiming("GeneratingDimensionFields");
+        RequestLogUtils.startTiming("GeneratingDimensionFields");
         try {
             return apiDimensionPathSegments.stream()
                     .filter(pathSegment -> !pathSegment.getPath().isEmpty())
@@ -549,7 +549,7 @@ public class DataApiRequest extends ApiRequest {
                             LinkedHashMap::new
                     ));
         } finally {
-            RequestLog.stopTiming("GeneratingDimensionFields");
+            RequestLogUtils.stopTiming("GeneratingDimensionFields");
         }
     }
 
@@ -721,7 +721,7 @@ public class DataApiRequest extends ApiRequest {
             DimensionDictionary dimensionDictionary,
             LogicalTable table
     ) throws BadApiRequestException {
-        RequestLog.startTiming("GeneratingLogicalMetrics");
+        RequestLogUtils.startTiming("GeneratingLogicalMetrics");
         try {
             LOG.trace("Metric dictionary: {}", metricDictionary);
 
@@ -834,7 +834,7 @@ public class DataApiRequest extends ApiRequest {
             LOG.trace("Generated set of logical metric: {}", generated);
             return generated;
         } finally {
-            RequestLog.stopTiming("GeneratingLogicalMetrics");
+            RequestLogUtils.stopTiming("GeneratingLogicalMetrics");
         }
     }
 
@@ -895,7 +895,7 @@ public class DataApiRequest extends ApiRequest {
             Granularity granularity,
             DateTimeFormatter dateTimeFormatter
     ) throws BadApiRequestException {
-        RequestLog.startTiming("GeneratingIntervals");
+        RequestLogUtils.startTiming("GeneratingIntervals");
         try {
             Set<Interval> generated = new LinkedHashSet<>();
             if (apiIntervalQuery == null || apiIntervalQuery.equals("")) {
@@ -967,7 +967,7 @@ public class DataApiRequest extends ApiRequest {
             }
             return generated;
         } finally {
-            RequestLog.stopTiming("GeneratingIntervals");
+            RequestLogUtils.stopTiming("GeneratingIntervals");
         }
     }
 
@@ -989,7 +989,7 @@ public class DataApiRequest extends ApiRequest {
             LogicalTable table,
             DimensionDictionary dimensionDictionary
     ) throws BadApiRequestException {
-        RequestLog.startTiming("GeneratingFilters");
+        RequestLogUtils.startTiming("GeneratingFilters");
         try {
             LOG.trace("Dimension Dictionary: {}", dimensionDictionary);
             // Set of filter objects
@@ -1032,7 +1032,7 @@ public class DataApiRequest extends ApiRequest {
 
             return generated;
         } finally {
-            RequestLog.stopTiming("GeneratingFilters");
+            RequestLogUtils.stopTiming("GeneratingFilters");
         }
     }
 
@@ -1053,7 +1053,7 @@ public class DataApiRequest extends ApiRequest {
             Set<LogicalMetric> logicalMetrics,
             MetricDictionary metricDictionary
     ) throws BadApiRequestException {
-        RequestLog.startTiming("GeneratingHavings");
+        RequestLogUtils.startTiming("GeneratingHavings");
         try {
             LOG.trace("Metric Dictionary: {}", metricDictionary);
             // Havings are optional hence check if havings are requested.
@@ -1093,7 +1093,7 @@ public class DataApiRequest extends ApiRequest {
 
             return generated;
         } finally {
-            RequestLog.stopTiming("GeneratingHavings");
+            RequestLogUtils.stopTiming("GeneratingHavings");
         }
     }
 
@@ -1113,7 +1113,7 @@ public class DataApiRequest extends ApiRequest {
             Set<LogicalMetric> logicalMetrics,
             MetricDictionary metricDictionary
     ) throws BadApiRequestException {
-        RequestLog.startTiming("GeneratingSortColumns");
+        RequestLogUtils.startTiming("GeneratingSortColumns");
         try {
             String sortMetricName;
             List<String> metricWithDirection;
@@ -1177,7 +1177,7 @@ public class DataApiRequest extends ApiRequest {
 
             return metricSortColumns;
         } finally {
-            RequestLog.stopTiming("GeneratingSortColumns");
+            RequestLogUtils.stopTiming("GeneratingSortColumns");
         }
     }
 

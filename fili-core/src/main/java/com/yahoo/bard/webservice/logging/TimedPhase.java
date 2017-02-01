@@ -1,6 +1,5 @@
-/*
- * Copyright 2017 Yahoo Inc. All rights reserved.
- */
+// Copyright 2016 Yahoo Inc.
+// Licensed under the terms of the Apache license. Please see LICENSE.md file distributed with this work for terms.
 package com.yahoo.bard.webservice.logging;
 
 import com.yahoo.bard.webservice.application.MetricRegistryFactory;
@@ -69,6 +68,7 @@ public class TimedPhase {
 
     /**
      * Returns the timer's name.
+     *
      * @return the name of the timer
      */
     public String getName() {
@@ -77,6 +77,7 @@ public class TimedPhase {
 
     /**
      * Returns the duration of the timer in nanoseconds.
+     *
      * @return the amount of time the timer was running
      */
     public long getDuration() {

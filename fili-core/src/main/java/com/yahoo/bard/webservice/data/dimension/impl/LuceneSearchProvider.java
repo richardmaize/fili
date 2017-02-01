@@ -8,7 +8,7 @@ import com.yahoo.bard.webservice.data.dimension.DimensionField;
 import com.yahoo.bard.webservice.data.dimension.DimensionRow;
 import com.yahoo.bard.webservice.data.dimension.KeyValueStore;
 import com.yahoo.bard.webservice.data.dimension.SearchProvider;
-import com.yahoo.bard.webservice.logging.RequestLog;
+import com.yahoo.bard.webservice.logging.RequestLogUtils;
 import com.yahoo.bard.webservice.util.DimensionStoreKeyUtils;
 import com.yahoo.bard.webservice.util.Pagination;
 import com.yahoo.bard.webservice.util.SinglePagePagination;
@@ -547,7 +547,7 @@ public class LuceneSearchProvider implements SearchProvider {
         initializeIndexSearcher();
         lock.readLock().lock();
         try {
-            RequestLog.startTiming("QueryingLucene");
+            RequestLogUtils.startTiming("QueryingLucene");
             ScoreDoc[] hits;
             try {
                 hits = getPageOfData(
@@ -572,11 +572,11 @@ public class LuceneSearchProvider implements SearchProvider {
                     }
                 }
             } finally {
-                RequestLog.stopTiming("QueryingLucene");
+                RequestLogUtils.stopTiming("QueryingLucene");
             }
 
             // convert hits to dimension rows
-            RequestLog.startTiming("LuceneHydratingDimensionRows");
+            RequestLogUtils.startTiming("LuceneHydratingDimensionRows");
             try {
                 String idKey = DimensionStoreKeyUtils.getColumnKey(dimension.getKey().getName());
                 filteredDimRows = Arrays.stream(hits)
@@ -594,7 +594,7 @@ public class LuceneSearchProvider implements SearchProvider {
                         .map(dimension::findDimensionRowByKeyValue)
                         .collect(Collectors.toCollection(TreeSet::new));
             } finally {
-                RequestLog.stopTiming("LuceneHydratingDimensionRows");
+                RequestLogUtils.stopTiming("LuceneHydratingDimensionRows");
             }
 
             documentCount = luceneIndexSearcher.count(query); //throws the caught IOException
