@@ -227,9 +227,6 @@ public class PreResponseDeserializer {
                 )
         );
 
-        //Recreate ZonedSchema from granularity and timezone values
-        Granularity granularity = generateGranularity(schemaNode.get(SCHEMA_GRANULARITY).asText(), timezone);
-
         LinkedHashSet<Column> columns = Streams.stream(schemaNode.get(SCHEMA_DIM_COLUMNS))
                 .map(JsonNode::asText)
                 .map(this::resolveDimensionName)
