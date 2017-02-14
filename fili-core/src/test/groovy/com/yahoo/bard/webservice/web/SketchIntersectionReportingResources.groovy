@@ -35,6 +35,8 @@ import com.yahoo.bard.webservice.druid.model.postaggregation.SketchSetOperationP
 import com.yahoo.bard.webservice.druid.model.postaggregation.SketchSetOperationPostAggregation
 import com.yahoo.bard.webservice.druid.util.FieldConverterSupplier
 import com.yahoo.bard.webservice.druid.util.SketchFieldConverter
+import com.yahoo.bard.webservice.metadata.DataSourceMetadataService
+import com.yahoo.bard.webservice.metadata.TestDataSourceMetadataService
 import com.yahoo.bard.webservice.table.ConcretePhysicalTable
 import com.yahoo.bard.webservice.table.LogicalTable
 import com.yahoo.bard.webservice.table.PhysicalTable
@@ -159,9 +161,9 @@ class SketchIntersectionReportingResources extends Specification {
         PhysicalTable physicalTable = new ConcretePhysicalTable(
                 "NETWORK",
                 DAY.buildZonedTimeGrain(UTC),
-                columns
-                ,
-                [:]
+                columns,
+                [:],
+                Mock(DataSourceMetadataService)
         )
 
         TableGroup tableGroup = new TableGroup([physicalTable] as LinkedHashSet, metrics)

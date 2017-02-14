@@ -24,6 +24,16 @@ public class BaseSchema implements Schema {
     }
 
     @Override
+    public LinkedHashSet<Column> getColumns() {
+        return columns;
+    }
+
+    @Override
+    public boolean containsColumn(String name) {
+        return getColumns().stream().map(Column::getName).anyMatch(name::equals);
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -39,10 +49,5 @@ public class BaseSchema implements Schema {
     @Override
     public int hashCode() {
         return Objects.hash(columns);
-    }
-
-    @Override
-    public LinkedHashSet<Column> getColumns() {
-        return columns;
     }
 }

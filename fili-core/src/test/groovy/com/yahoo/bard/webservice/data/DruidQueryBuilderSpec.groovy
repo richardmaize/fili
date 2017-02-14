@@ -28,6 +28,7 @@ import com.yahoo.bard.webservice.druid.model.query.DruidAggregationQuery
 import com.yahoo.bard.webservice.druid.model.query.GroupByQuery
 import com.yahoo.bard.webservice.druid.model.query.TimeSeriesQuery
 import com.yahoo.bard.webservice.druid.model.query.TopNQuery
+import com.yahoo.bard.webservice.metadata.DataSourceMetadataService
 import com.yahoo.bard.webservice.table.ConcretePhysicalTable
 import com.yahoo.bard.webservice.table.PhysicalTable
 import com.yahoo.bard.webservice.table.resolver.DefaultPhysicalTableResolver
@@ -133,9 +134,9 @@ class DruidQueryBuilderSpec extends Specification {
         PhysicalTable tab = new ConcretePhysicalTable(
                 "tab1",
                 DAY.buildZonedTimeGrain(UTC),
-                [] as Set
-                ,
-                [:]
+                [] as Set,
+                [:],
+                Mock(DataSourceMetadataService)
         )
         Filter filter = FILTER_BUILDER.buildFilters([(resources.d3): apiSet])
         ZonedTimeGrain granularity = WEEK.buildZonedTimeGrain(UTC)
@@ -234,9 +235,9 @@ class DruidQueryBuilderSpec extends Specification {
         PhysicalTable tab = new ConcretePhysicalTable(
                 "tab1",
                 DAY.buildZonedTimeGrain(UTC),
-                [] as Set
-                ,
-                [:]
+                [] as Set,
+                [:],
+                Mock(DataSourceMetadataService)
         )
         Filter filter = FILTER_BUILDER.buildFilters([(resources.d3): apiSet])
         ZonedTimeGrain granularity = YEAR.buildZonedTimeGrain(UTC)
